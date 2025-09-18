@@ -16,8 +16,8 @@ def add_task(args):
 
 
 def delete_task(args):
-    print(f"Deleting {args.task_id}")
+    print(f"Deleting {args.id}")
 
 
 def update_task(args):
-    print(f"Updating {args.task_id} -> {args.new_title}")
+    print(f"Updating {args.id} -> {args.new_title}")

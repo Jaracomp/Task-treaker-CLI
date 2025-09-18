@@ -20,7 +20,7 @@ COMMANDS = [
         "name": "delete",
         "help": "Delete task",
         "func": delete_task,
-        "args": [{"name": "task_id", "type": int, "help": "Task ID"}],
+        "args": [{"name": "id", "type": int, "help": "Task ID"}],
         "epilog": "Example: task-cli delete 1",
     },
     {
@@ -28,7 +28,7 @@ COMMANDS = [
         "help": "Update task",
         "func": update_task,
         "args": [
-            {"name": "task_id", "type": int, "help": "Task ID"},
+            {"name": "id", "type": int, "help": "Task ID"},
             {"name": "new_title", "type": str, "help": "New title"},
         ],
         "epilog": "Example: task-cli update 1 '...'",
