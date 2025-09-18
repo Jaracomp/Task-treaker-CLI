@@ -7,7 +7,9 @@ def main():
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     for cmd in COMMANDS:
-        subparser = subparsers.add_parser(cmd["name"], help=cmd["help"])
+        subparser = subparsers.add_parser(
+            cmd["name"], help=cmd["help"], epilog=cmd.get("epilog", None)
+        )
         for arg in cmd["args"]:
             subparser.add_argument(arg["name"], type=arg["type"], help=arg["help"])
         subparser.set_defaults(func=cmd["func"])
