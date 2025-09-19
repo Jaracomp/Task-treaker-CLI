@@ -6,16 +6,16 @@ def main():
     parser = ArgumentParser(prog="task-cli", description="Task tracker CLI")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
+    # Add subparsers for each command and their arguments
     for cmd in COMMANDS:
         subparser = subparsers.add_parser(
-            cmd["name"], help=cmd["help"], epilog=cmd.get("epilog", None)
+            name=cmd["name"], help=cmd["help"], epilog=cmd.get("epilog", None)
         )
         for arg in cmd["args"]:
-            subparser.add_argument(arg["name"], type=arg["type"], help=arg["help"])
+            subparser.add_argument(**arg)
         subparser.set_defaults(func=cmd["func"])
 
     args = parser.parse_args()
-
     args.func(args)
 
 
