@@ -74,3 +74,28 @@ def update_task(args):
             break
     else:
         print(f"Task '{args.new_title}' not found.")
+
+
+def _update_task_status(task_id: int, new_status: str) -> None:
+    tasks = load_storage()
+    for task in tasks:
+        if task["id"] == task_id:
+            task["status"] = new_status
+            task["updated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            save_storage(tasks)
+            print(f"Task {task_id} marked as {new_status.replace('_', ' ')}.")
+            break
+    else:
+        print(f"Task {task_id} not found.")
+
+
+def mark_to_do(args):
+    _update_task_status(args.id, "todo")
+
+
+def mark_in_progress(args):
+    _update_task_status(args.id, "in_progress")
+
+
+def mark_done(args):
+    _update_task_status(args.id, "done")
