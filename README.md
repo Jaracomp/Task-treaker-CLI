@@ -12,7 +12,7 @@ or
 ```bash
 git clone https://github.com/Jaracomp/Task-treaker-CLI.git
 cd Task-treaker-CLI
-pip install . -e
+pip install .
 ```
 
 ### To uninstall
