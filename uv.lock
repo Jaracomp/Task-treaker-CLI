@@ -12,9 +12,9 @@ wheels = [
 ]
 
 [[package]]
-name = "task-treaker-cli"
-version = "0.1.0"
-source = { virtual = "." }
+name = "taskcli"
+version = "0.1.2"
+source = { editable = "." }
 dependencies = [
     { name = "tabulate" },
 ]

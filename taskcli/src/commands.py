@@ -7,8 +7,9 @@ from .task_cli_functions import (
     mark_in_progress,
     mark_done,
 )
+from typing import Dict, List, Union, Callable, Any
 
-COMMANDS = [
+COMMANDS: List[Dict[str, Any]] = [
     {
         "name": "add",
         "help": "Add new task",

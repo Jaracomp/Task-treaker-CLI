@@ -1,5 +1,6 @@
 from argparse import ArgumentParser
 from .src.commands import COMMANDS
+from typing import Callable, Dict, List, Union
 
 
 def main():
