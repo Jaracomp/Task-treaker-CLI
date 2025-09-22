@@ -1,9 +1,11 @@
-from tabulate import tabulate
+from dataclasses import asdict, dataclass
 from datetime import datetime
-from dataclasses import dataclass, asdict
 from typing import (
     Literal,
 )
+
+from tabulate import tabulate
+
 from .storage import load_storage, save_storage
 
 

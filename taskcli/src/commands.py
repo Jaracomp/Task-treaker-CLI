@@ -1,11 +1,13 @@
+from typing import Any, Callable, Dict, List, Union
+
 from .task_cli_functions import (
-    list_tasks,
     add_task,
     delete_task,
-    update_task,
-    mark_to_do,
-    mark_in_progress,
+    list_tasks,
     mark_done,
+    mark_in_progress,
+    mark_to_do,
+    update_task,
 )
 
 COMMANDS = [
