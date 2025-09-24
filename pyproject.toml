@@ -16,12 +16,6 @@ build-backend = "setuptools.build_meta"
 [project.scripts]
 taskcli = "taskcli.main:main"
 
-[tool.setuptools]
-package-dir = {"" = "taskcli"}
-
-[tool.setuptools.packages.find]
-where = ["taskcli"]
-
 [tool.ruff]
 line-length = 120
 select = ["I"]

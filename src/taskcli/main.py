@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 
-from .src.commands import COMMANDS
+from .commands import COMMANDS
 
 
 def main():
