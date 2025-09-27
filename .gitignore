@@ -8,6 +8,6 @@ wheels/
 
 # Virtual environments
 .venv
+build/
 
 task-cli.json
-build/
