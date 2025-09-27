@@ -1,9 +1,10 @@
 from argparse import ArgumentParser
 
-from .commands import COMMANDS
+from .registry import COMMANDS
+from .commands import *  # noqa: F403
 
 
-def main():
+def main() -> None:
     parser = ArgumentParser(prog="task-cli", description="Task tracker CLI")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
