@@ -2,16 +2,32 @@ from datetime import datetime
 from tabulate import tabulate
 from .storage import load_storage, save_storage
 from .registry import command
-from .models import Task
+from .models import Task, TaskStatus
+from typing import Any
 
 
 @command(
     name="list",
     help="List tasks",
-    epilog="Example: task-cli list",
+    args=[
+        {
+            "dest": "status",
+            "type": str,
+            "choices": TaskStatus.__args__,
+            "nargs": "?",
+            "default": "all",
+            "help": "Filter by status",
+        },
+    ],
+    epilog="Example: task-cli list done",
 )
 def list_tasks(args):
-    tasks = load_storage()
+    tasks: list[dict[str, Any]] = load_storage()
+
+    if args.status and args.status != "all":
+        tasks: list[dict[str, Any]] = list(filter(
+            lambda task: task["status"] == args.status, tasks
+        ))
 
     if tasks:
         headers = ["ID", "Description", "Status", "Created At", "Updated At"]
