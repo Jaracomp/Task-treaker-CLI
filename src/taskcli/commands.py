@@ -102,7 +102,7 @@ def update_task(args):
             print(f"Task {args.id} - '{args.new_title}' updated.")
             break
     else:
-        print(f"Task '{args.new_title}' not found.")
+        print(f"Task {args.id} not found.")
 
 
 @command(
