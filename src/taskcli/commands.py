@@ -4,6 +4,7 @@ from .storage import load_storage, save_storage
 from .registry import CLIApp
 from .models import Task, TaskStatus
 from typing import Any
+from .registry import ArgMeta
 
 
 app = CLIApp()
@@ -11,14 +12,14 @@ app = CLIApp()
 
 @app.command(
     args=[
-        {
-            "dest": "status",
-            "type": str,
-            "choices": TaskStatus.__args__,
-            "nargs": "?",
-            "default": "all",
-            "help": "Filter by status",
-        },
+        ArgMeta(
+            dest="status",
+            type=str,
+            choices=TaskStatus.__args__,
+            nargs="?",
+            default="all",
+            help="Filter by status",
+        ),
     ],
     epilog="Example: task-cli list done",
 )
@@ -54,7 +55,7 @@ def list(args):
 
 
 @app.command(
-    args=[{"dest": "description", "type": str, "help": "Task description"}],
+    args=[ArgMeta(dest="description", type=str, help="Task description")],
     epilog="Example: task-cli add '...'",
 )
 def add(args):
@@ -69,7 +70,7 @@ def add(args):
 
 
 @app.command(
-    args=[{"dest": "id", "type": int, "help": "Task ID"}],
+    args=[ArgMeta(dest="id", type=int, help="Task ID")],
     epilog="Example: task-cli delete 1",
 )
 def delete(args):
@@ -88,8 +89,8 @@ def delete(args):
 
 @app.command(
     args=[
-        {"dest": "id", "type": int, "help": "Task ID"},
-        {"dest": "new_title", "type": str, "help": "New title"},
+        ArgMeta(dest="id", type=int, help="Task ID"),
+        ArgMeta(dest="new_title", type=str, help="New title"),
     ],
     epilog="Example: task-cli update 1 '...'",
 )
@@ -110,13 +111,13 @@ def update(args):
 
 @app.command(
     args=[
-        {"dest": "id", "type": int, "help": "Task ID"},
-        {
-            "dest": "status",
-            "type": str,
-            "choices": TaskStatus.__args__,
-            "help": "New status",
-        },
+        ArgMeta(dest="id", type=int, help="Task ID"),
+        ArgMeta(
+            dest="status",
+            type=str,
+            choices=TaskStatus.__args__,
+            help="New status",
+        ),
     ],
     epilog="Example: task-cli mark 1 done",
 )
@@ -124,7 +125,7 @@ def mark(args):
     """Mark task status as todo, in-progress, or done"""
 
     tasks = load_storage()
-    status = args.status.replace("-", "_")  # Нормализуй "in-progress" -> "in_progress"
+    status = args.status
     for task in tasks:
         if task["id"] == args.id:
             task["status"] = status

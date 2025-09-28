@@ -1,16 +1,24 @@
-from functools import wraps
 from dataclasses import dataclass, field
 from argparse import ArgumentParser
-from typing import Any, List, Dict, Callable, Optional
-from types import FunctionType
+from typing import Any, List, Callable, Optional
+
+
+@dataclass
+class ArgMeta:
+    dest: str
+    type: Optional[type] = None
+    help: Optional[str] = None
+    choices: Optional[List[Any]] = None
+    nargs: Optional[str] = None
+    default: Optional[Any] = None
 
 
 @dataclass
 class CommandMeta:
     name: str
     help: str
-    func: Callable[..., Any]
-    args: List[Dict[str, Any]] = field(default_factory=list)
+    func: Callable
+    args: List[ArgMeta] = field(default_factory=list)
     epilog: Optional[str] = None
 
 
@@ -24,27 +32,29 @@ class CLIApp:
         self,
         name: Optional[str] = None,
         help: Optional[str] = None,
-        args: List[Dict[str, Any]] = [],
+        args: List[ArgMeta] = [],
         epilog: Optional[str] = None,
-    ):
-        def decorator(func: FunctionType):
-            command_name: str = name or func.__name__.replace("_", "-")
-            command_help: Optional[str] = help or func.__doc__ or ""
+    ) -> Callable:
+        def decorator(func: Callable) -> Callable:
+            nonlocal name, help
 
-            @wraps(func)
-            def wrapper(*args, **kwargs):
-                return func(*args, **kwargs)
+            name = name or getattr(func, "__name__", None)
+            if not name:
+                raise ValueError("Function name must be a non-empty string")
+
+            name = name.replace("_", "-")
+            help = help or (func.__doc__ or "")
 
             self.commands.append(
                 CommandMeta(
-                    name=command_name,
-                    help=command_help,
-                    func=wrapper,
+                    name=name,
+                    help=help,
+                    func=func,
                     args=args,
                     epilog=epilog,
                 )
             )
-            return wrapper
+            return func
 
         return decorator
 
@@ -57,7 +67,14 @@ class CLIApp:
                 name=cmd.name, help=cmd.help, epilog=cmd.epilog
             )
             for arg in cmd.args:
-                subparser.add_argument(**arg)
+                subparser.add_argument(
+                    arg.dest,
+                    type=arg.type,
+                    help=arg.help,
+                    choices=arg.choices,
+                    nargs=arg.nargs,
+                    default=arg.default,
+                )
             subparser.set_defaults(func=cmd.func)
 
         args = parser.parse_args()
