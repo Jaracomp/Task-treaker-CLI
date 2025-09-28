@@ -1,24 +1,8 @@
-from argparse import ArgumentParser
-
-from .registry import COMMANDS
-from .commands import *  # noqa: F403
+from .commands import app
 
 
 def main() -> None:
-    parser = ArgumentParser(prog="task-cli", description="Task tracker CLI")
-    subparsers = parser.add_subparsers(dest="command", required=True)
-
-    # Add subparsers for each command and their arguments
-    for cmd in COMMANDS:
-        subparser = subparsers.add_parser(
-            name=cmd["name"], help=cmd["help"], epilog=cmd.get("epilog", None)
-        )
-        for arg in cmd["args"]:
-            subparser.add_argument(**arg)
-        subparser.set_defaults(func=cmd["func"])
-
-    args = parser.parse_args()
-    args.func(args)
+    app()
 
 
 if __name__ == "__main__":

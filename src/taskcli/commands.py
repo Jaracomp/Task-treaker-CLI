@@ -1,12 +1,15 @@
 from datetime import datetime
 from tabulate import tabulate
 from .storage import load_storage, save_storage
-from .registry import command
+from .registry import CLIApp
 from .models import Task, TaskStatus
 from typing import Any
 
 
-@command(
+app = CLIApp()
+
+
+@app.command(
     args=[
         {
             "dest": "status",
@@ -50,7 +53,7 @@ def list(args):
         print("No tasks found.")
 
 
-@command(
+@app.command(
     args=[{"dest": "description", "type": str, "help": "Task description"}],
     epilog="Example: task-cli add '...'",
 )
@@ -65,7 +68,7 @@ def add(args):
     print(f"Task {new_id} - '{args.description}' added.")
 
 
-@command(
+@app.command(
     args=[{"dest": "id", "type": int, "help": "Task ID"}],
     epilog="Example: task-cli delete 1",
 )
@@ -83,7 +86,7 @@ def delete(args):
         print(f"Task {args.id} not found.")
 
 
-@command(
+@app.command(
     args=[
         {"dest": "id", "type": int, "help": "Task ID"},
         {"dest": "new_title", "type": str, "help": "New title"},
@@ -105,7 +108,7 @@ def update(args):
         print(f"Task {args.id} not found.")
 
 
-@command(
+@app.command(
     args=[
         {"dest": "id", "type": int, "help": "Task ID"},
         {
