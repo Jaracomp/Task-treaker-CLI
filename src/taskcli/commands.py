@@ -7,8 +7,6 @@ from typing import Any
 
 
 @command(
-    name="list",
-    help="List tasks",
     args=[
         {
             "dest": "status",
@@ -21,13 +19,15 @@ from typing import Any
     ],
     epilog="Example: task-cli list done",
 )
-def list_tasks(args):
+def list(args):
+    """List tasks"""
+
     tasks: list[dict[str, Any]] = load_storage()
 
     if args.status and args.status != "all":
-        tasks: list[dict[str, Any]] = list(filter(
-            lambda task: task["status"] == args.status, tasks
-        ))
+        tasks: list[dict[str, Any]] = list(
+            filter(lambda task: task["status"] == args.status, tasks)
+        )
 
     if tasks:
         headers = ["ID", "Description", "Status", "Created At", "Updated At"]
@@ -51,12 +51,12 @@ def list_tasks(args):
 
 
 @command(
-    name="add",
-    help="Add new task",
     args=[{"dest": "description", "type": str, "help": "Task description"}],
     epilog="Example: task-cli add '...'",
 )
-def add_task(args):
+def add(args):
+    """Add new task"""
+
     tasks = load_storage()
     new_id = max([task["id"] for task in tasks], default=0) + 1
     new_task = Task(id=new_id, description=args.description).to_dict()
@@ -66,12 +66,12 @@ def add_task(args):
 
 
 @command(
-    name="delete",
-    help="Delete task",
     args=[{"dest": "id", "type": int, "help": "Task ID"}],
     epilog="Example: task-cli delete 1",
 )
-def delete_task(args):
+def delete(args):
+    """Delete task"""
+
     tasks = load_storage()
     for task in tasks:
         if task["id"] == args.id:
@@ -84,15 +84,15 @@ def delete_task(args):
 
 
 @command(
-    name="update",
-    help="Update task",
     args=[
         {"dest": "id", "type": int, "help": "Task ID"},
         {"dest": "new_title", "type": str, "help": "New title"},
     ],
     epilog="Example: task-cli update 1 '...'",
 )
-def update_task(args):
+def update(args):
+    """Update task description"""
+
     tasks = load_storage()
     for task in tasks:
         if task["id"] == args.id:
@@ -106,20 +106,20 @@ def update_task(args):
 
 
 @command(
-    name="mark",
-    help="Mark task as todo, in-progress, or done",
     args=[
         {"dest": "id", "type": int, "help": "Task ID"},
         {
             "dest": "status",
             "type": str,
-            "choices": ["todo", "in-progress", "done"],
+            "choices": TaskStatus.__args__,
             "help": "New status",
         },
     ],
     epilog="Example: task-cli mark 1 done",
 )
-def mark_task(args):
+def mark(args):
+    """Mark task status as todo, in-progress, or done"""
+
     tasks = load_storage()
     status = args.status.replace("-", "_")  # Нормализуй "in-progress" -> "in_progress"
     for task in tasks:
