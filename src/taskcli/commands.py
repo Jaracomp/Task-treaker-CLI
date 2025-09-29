@@ -3,7 +3,7 @@ from tabulate import tabulate
 from .storage import load_storage, save_storage
 from .registry import CLIApp
 from .models import Task, TaskStatus
-from typing import Any
+from typing import Any, List
 from .registry import ArgMeta
 
 
@@ -11,6 +11,7 @@ app = CLIApp()
 
 
 @app.command(
+    name="list",
     args=[
         ArgMeta(
             dest="status",
@@ -23,13 +24,13 @@ app = CLIApp()
     ],
     epilog="Example: task-cli list done",
 )
-def list(args):
+def list_tasks(args):
     """List tasks"""
 
-    tasks: list[dict[str, Any]] = load_storage()
+    tasks: List[dict[str, Any]] = load_storage()
 
     if args.status and args.status != "all":
-        tasks: list[dict[str, Any]] = list(
+        tasks: List[dict[str, Any]] = list(
             filter(lambda task: task["status"] == args.status, tasks)
         )
 
@@ -55,10 +56,11 @@ def list(args):
 
 
 @app.command(
+    name="add",
     args=[ArgMeta(dest="description", type=str, help="Task description")],
     epilog="Example: task-cli add '...'",
 )
-def add(args):
+def add_tasks(args):
     """Add new task"""
 
     tasks = load_storage()
@@ -70,10 +72,11 @@ def add(args):
 
 
 @app.command(
+    name="delete",
     args=[ArgMeta(dest="id", type=int, help="Task ID")],
     epilog="Example: task-cli delete 1",
 )
-def delete(args):
+def delete_tasks(args):
     """Delete task"""
 
     tasks = load_storage()
@@ -88,13 +91,14 @@ def delete(args):
 
 
 @app.command(
+    name="update",
     args=[
         ArgMeta(dest="id", type=int, help="Task ID"),
         ArgMeta(dest="new_title", type=str, help="New title"),
     ],
     epilog="Example: task-cli update 1 '...'",
 )
-def update(args):
+def update_tasks(args):
     """Update task description"""
 
     tasks = load_storage()
@@ -110,6 +114,7 @@ def update(args):
 
 
 @app.command(
+    name="mark",
     args=[
         ArgMeta(dest="id", type=int, help="Task ID"),
         ArgMeta(
@@ -121,7 +126,7 @@ def update(args):
     ],
     epilog="Example: task-cli mark 1 done",
 )
-def mark(args):
+def mark_tasks(args):
     """Mark task status as todo, in-progress, or done"""
 
     tasks = load_storage()
