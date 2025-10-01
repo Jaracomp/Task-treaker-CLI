@@ -28,29 +28,32 @@ class CLIApp:
         self.description = description
         self.commands: List[CommandMeta] = []
 
+    def argument(self, **kwargs: Any) -> Callable:
+        def decorator(func: Callable) -> Callable:
+            args_list = getattr(func, "_args", [])
+            args_list.append(ArgMeta(dest=kwargs.pop("dest"), **kwargs))
+            setattr(func, "_args", args_list)
+            return func
+
+        return decorator
+
     def command(
         self,
-        name: Optional[str] = None,
+        name: str,
         help: Optional[str] = None,
-        args: List[ArgMeta] = [],
         epilog: Optional[str] = None,
     ) -> Callable:
         def decorator(func: Callable) -> Callable:
             nonlocal name, help
-
-            name = name or getattr(func, "__name__", None)
-            if not name:
-                raise ValueError("Function name must be a non-empty string")
-
             name = name.replace("_", "-")
-            help = help or (func.__doc__ or "")
-
+            help = help or func.__doc__ or ""
+            args_list: List[ArgMeta] = getattr(func, "_args", [])
             self.commands.append(
                 CommandMeta(
                     name=name,
                     help=help,
                     func=func,
-                    args=args,
+                    args=args_list,
                     epilog=epilog,
                 )
             )
@@ -58,7 +61,7 @@ class CLIApp:
 
         return decorator
 
-    def run(self) -> None:
+    def __call__(self) -> None:
         parser = ArgumentParser(prog=self.prog, description=self.description)
         subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -79,6 +82,3 @@ class CLIApp:
 
         args = parser.parse_args()
         args.func(args)
-
-    def __call__(self) -> None:
-        self.run()

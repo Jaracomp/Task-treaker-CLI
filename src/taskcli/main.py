@@ -1,4 +1,4 @@
-from .commands import app
+from taskcli.commands import app
 
 
 def main() -> None:

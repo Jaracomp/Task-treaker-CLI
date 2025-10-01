@@ -4,25 +4,19 @@ from .storage import load_storage, save_storage
 from .registry import CLIApp
 from .models import Task, TaskStatus
 from typing import Any, List
-from .registry import ArgMeta
 
 
 app = CLIApp()
 
 
-@app.command(
-    name="list",
-    args=[
-        ArgMeta(
-            dest="status",
-            type=str,
-            choices=TaskStatus.__args__,
-            nargs="?",
-            default="all",
-            help="Filter by status",
-        ),
-    ],
-    epilog="Example: task-cli list done",
+@app.command(name="list", epilog="Example: task-cli list done")
+@app.argument(
+    dest="status",
+    type=str,
+    choices=TaskStatus.__args__,
+    nargs="?",
+    default="all",
+    help="Filter by status",
 )
 def list_tasks(args):
     """List tasks"""
@@ -55,11 +49,8 @@ def list_tasks(args):
         print("No tasks found.")
 
 
-@app.command(
-    name="add",
-    args=[ArgMeta(dest="description", type=str, help="Task description")],
-    epilog="Example: task-cli add '...'",
-)
+@app.command(name="add", epilog="Example: task-cli add '...'")
+@app.argument(dest="description", type=str, help="Task description")
 def add_tasks(args):
     """Add new task"""
 
@@ -71,11 +62,8 @@ def add_tasks(args):
     print(f"Task {new_id} - '{args.description}' added.")
 
 
-@app.command(
-    name="delete",
-    args=[ArgMeta(dest="id", type=int, help="Task ID")],
-    epilog="Example: task-cli delete 1",
-)
+@app.command(name="delete", epilog="Example: task-cli delete 1")
+@app.argument(dest="id", type=int, help="Task ID")
 def delete_tasks(args):
     """Delete task"""
 
@@ -90,14 +78,9 @@ def delete_tasks(args):
         print(f"Task {args.id} not found.")
 
 
-@app.command(
-    name="update",
-    args=[
-        ArgMeta(dest="id", type=int, help="Task ID"),
-        ArgMeta(dest="new_title", type=str, help="New title"),
-    ],
-    epilog="Example: task-cli update 1 '...'",
-)
+@app.command(name="update", epilog="Example: task-cli update 1 '...'")
+@app.argument(dest="new_title", type=str, help="New title")
+@app.argument(dest="id", type=int, help="Task ID")
 def update_tasks(args):
     """Update task description"""
 
@@ -113,18 +96,13 @@ def update_tasks(args):
         print(f"Task {args.id} not found.")
 
 
-@app.command(
-    name="mark",
-    args=[
-        ArgMeta(dest="id", type=int, help="Task ID"),
-        ArgMeta(
-            dest="status",
-            type=str,
-            choices=TaskStatus.__args__,
-            help="New status",
-        ),
-    ],
-    epilog="Example: task-cli mark 1 done",
+@app.command(name="mark", epilog="Example: task-cli mark 1 done")
+@app.argument(dest="id", type=int, help="Task ID")
+@app.argument(
+    dest="status",
+    type=str,
+    choices=TaskStatus.__args__,
+    help="New status",
 )
 def mark_tasks(args):
     """Mark task status as todo, in-progress, or done"""
