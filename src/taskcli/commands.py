@@ -1,9 +1,9 @@
 from datetime import datetime
 from tabulate import tabulate
+from typing import Any, List
 from .storage import load_storage, save_storage
 from .registry import CLIApp
 from .models import Task, TaskStatus
-from typing import Any, List
 
 
 app = CLIApp()
@@ -15,7 +15,6 @@ app = CLIApp()
     type=str,
     choices=TaskStatus.__args__,
     nargs="?",
-    default="all",
     help="Filter by status",
 )
 def list_tasks(args):

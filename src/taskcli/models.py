@@ -2,8 +2,8 @@ from dataclasses import asdict, dataclass
 from datetime import datetime
 from typing import Literal, TypeAlias
 
-TaskStatus: TypeAlias = Literal["all", "todo", "in-progress", "done"]
 
+TaskStatus: TypeAlias = Literal["todo", "in-progress", "done"]
 
 @dataclass
 class Task:
