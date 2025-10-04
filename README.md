@@ -21,14 +21,11 @@ pip uninstall taskcli
 ```
 
 ## ✨ Features
-- View all tasks
+- View all tasks and by status
 - Add a new task
 - Remove a task
-- Update a task
-- View tasks by status
-- Mark tasks as to do
-- Mark tasks as in progress
-- Mark tasks as done
+- Update a task description
+- Mark tasks as to do, in progress or done
 
 ## 🚀 Usage
 ```bash
@@ -38,11 +35,7 @@ $ taskcli delete [-h] id
 
 $ taskcli update [-h] id description
 
-$ taskcli mark-todo [-h] id
-
-$ taskcli mark-done [-h] id
-
-$ taskcli mark-in-progress [-h] id
+$ taskcli mark [-h] id {done,in-progress,todo}
 
 $ taskcli list [-h] [{done,in-progress,todo}]
 ```

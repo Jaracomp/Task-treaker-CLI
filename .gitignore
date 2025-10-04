@@ -10,4 +10,3 @@ wheels/
 .venv
 
 task-cli.json
-build/
