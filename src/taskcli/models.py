@@ -1,9 +1,10 @@
 from dataclasses import asdict, dataclass
 from datetime import datetime
-from typing import Literal, TypeAlias
+from typing import Literal, TypeAlias, List
 
 
 TaskStatus: TypeAlias = Literal["todo", "in-progress", "done"]
+STATUSES: List[str] = TaskStatus.__args__
 
 @dataclass
 class Task:
