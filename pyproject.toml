@@ -1,23 +1,18 @@
 [project]
 name = "taskcli"
-version = "0.1.2"
+version = "0.2.0"
 description = "Task treaker CLI tool"
 authors = [{ name = "Jaracomp"}]
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "tabulate>=0.9.0"
+    "pydantic>=2.11.9",
+    "tabulate>=0.9.0",
 ]
 
 [build-system]
-requires = ["setuptools>=42", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build"]
+build-backend = "uv_build"
 
 [project.scripts]
 taskcli = "taskcli.main:main"
-
-[tool.setuptools]
-package-dir = {"" = "taskcli"}
-
-[tool.setuptools.packages.find]
-where = ["taskcli"]
