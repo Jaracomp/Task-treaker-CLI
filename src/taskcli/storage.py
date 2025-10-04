@@ -1,10 +1,9 @@
 import json
 import os
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
-
-FILE = Path("task-cli.json")
+FILE: Path = Path("~/task-cli.json").expanduser()
 
 
 def load_storage() -> List[Dict[str, Any]]:
