@@ -12,6 +12,9 @@ readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
 
+[project.optional-dependencies]
+docs = ["sphinx", "sphinx-rtd-theme"]
+
 [project.urls]
 Repository = "https://github.com/Jaracomp/Task-treaker-CLI.git"
 
