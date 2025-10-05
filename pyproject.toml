@@ -1,6 +1,6 @@
 [project]
+dynamic = ["version"]
 name = "taskcli"
-version = "0.1.2"
 description = "Task treaker CLI tool"
 authors = [{ name = "Jaracomp"}]
 readme = "README.md"
@@ -11,8 +11,11 @@ dependencies = [
 ]
 
 [build-system]
-requires = ["setuptools>=42", "wheel"]
+requires = ["setuptools", "setuptools-git-versioning"]
 build-backend = "setuptools.build_meta"
 
 [project.scripts]
 taskcli = "taskcli.main:main"
+
+[tool.setuptools-git-versioning]
+enabled = true
